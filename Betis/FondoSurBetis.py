@@ -19,7 +19,7 @@ chrome_options.add_argument("--incognito")
 
 driver = webdriver.Chrome(executable_path="C:\\chromedriver.exe", options=chrome_options)
 
-driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_FondoSur")
+driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494237/select?viewCode=V_FondoSur")
 wait = WebDriverWait(driver, 120)
 wait50 = WebDriverWait(driver, 50)
 
@@ -88,12 +88,12 @@ def mapaGeneral():
                     time.sleep(60)
 
         except TimeoutException:
-            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_FondoSur")
+            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494237/select?viewCode=V_FondoSur")
 
 def mapaSectores():
 
     lugar = ('FondoSur')
-    driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_"+ lugar)
+    driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494237/select?viewCode=V_"+ lugar)
 
     contador = 0
 
@@ -151,7 +151,7 @@ def mapaSectores():
 
 
         except TimeoutException:
-            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_" + lugar)
+            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494237/select?viewCode=V_" + lugar)
 
 def seleccionAsientos():
     cargaAsientos = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@class="unavailable-seat disabled"]')))

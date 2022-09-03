@@ -19,11 +19,12 @@ chrome_options.add_argument("--incognito")
 
 driver = webdriver.Chrome(executable_path="C:\\chromedriver.exe", options=chrome_options)
 
-driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_FondoSur")
+driver.get("https://proticketing.com/realmadrid_champions/es_ES/entradas/evento/22292/session/1357473/select?_ga=2.20202872.15803665.1648709996-1206011927.1647002764")
 wait = WebDriverWait(driver, 120)
 wait50 = WebDriverWait(driver, 50)
 
 cookie = wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/div/div/div[2]/button[1]/span")))
+time.sleep(1)
 
 try:
     cookie.click()
@@ -34,8 +35,8 @@ except selenium.common.exceptions.ElementClickInterceptedException:
 
 def loginSocio():
 
-    socio = '63949'
-    password = '120697'
+    socio = '78507'
+    password = '101113'
 
     socio2 = '649542'
 
@@ -44,7 +45,7 @@ def loginSocio():
     driver.find_element_by_id('memberPwd').send_keys(password)
     driver.find_element_by_id('sale-member-submit').click()
 
-    time.sleep(1)
+    time.sleep(3)
 
     '''driver.find_element_by_id('memberUser').send_keys(socio2)
     driver.find_element_by_id('memberPwd').send_keys(password)
@@ -88,12 +89,12 @@ def mapaGeneral():
                     time.sleep(60)
 
         except TimeoutException:
-            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_FondoSur")
+            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1295758/select?_ga=2.146123831.280256750.1647002764-1206011927.1647002764")
 
 def mapaSectores():
 
     lugar = ('FondoSur')
-    driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_"+ lugar)
+    driver.get("https://proticketing.com/realmadrid_champions/es_ES/entradas/evento/22292/session/1357473/select?viewCode=V_"+ lugar)
 
     contador = 0
 
@@ -107,51 +108,70 @@ def mapaSectores():
             print('Dispo Sectores NO - ' + str(len(dispoNo)))
             print('Dispo Sectores SI - ' + str(len(dispoSi)))
 
-            if len(dispoSi) != 0:
-                winsound.PlaySound("SystemExclamation", winsound.SND_ALIAS)
+            for d in dispoSi:
                 try:
-                    dispoSi[0].click()
+                    idSector = d.get_attribute("id")
 
-                except selenium.common.exceptions.JavascriptException:
-                    driver.execute_script("arguments[0].click();", dispoSi[0])
+                except selenium.common.exceptions.StaleElementReferenceException:
+                    pass
 
-                except selenium.common.exceptions.ElementClickInterceptedException:
-                    webdriver.ActionChains(driver).move_to_element(dispoSi[0]).click(dispoSi[0]).perform()
 
-                cargaAsientos = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@class="button secondary expand back ng-binding"]')))
-                print("**carga asientos OK**")
+                for x, y in sectores.fondoSurCat3.items():
+                    if idSector in y:
+                        winsound.PlaySound("SystemExclamation", winsound.SND_ALIAS)
+                        print('El sector ' + x + ' esta libre- ' + idSector)
 
-                asientosLibres = driver.find_elements_by_xpath('//*[@class="interactive available-seat"]')
-                asientosOcupados = driver.find_elements_by_xpath('//*[@class="unavailable-seat"]')
-                print('Asientos ocupados - ' + str(len(asientosOcupados)))
-                print('Asientos libres - ' + str(len(asientosLibres)))
+                        try:
 
-                if len(asientosLibres) > 1:
-                    for i in asientosLibres:
-                        i.click()
+                            d.click()
+                            print('hecho click al sector')
 
-                    print('Empieza el letargo')
-                    time.sleep(700)
+                        except selenium.common.exceptions.JavascriptException:
+                            driver.execute_script("arguments[0].click();", dispoSi[0])
 
-                else:
-                    driver.back()
+                        except selenium.common.exceptions.ElementClickInterceptedException:
+                            webdriver.ActionChains(driver).move_to_element(dispoSi[0]).click(dispoSi[0]).perform()
+
+                        except selenium.common.exceptions.StaleElementReferenceException:
+                            pass
+
+
+                        cargaAsientos = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@class="button secondary expand back ng-binding"]')))
+                        print("**carga asientos OK**")
+
+                        asientosLibres = driver.find_elements_by_xpath('//*[@class="interactive available-seat"]')
+                        asientosOcupados = driver.find_elements_by_xpath('//*[@class="unavailable-seat"]')
+                        print('Asientos ocupados - ' + str(len(asientosOcupados)))
+                        print('Asientos libres - ' + str(len(asientosLibres)))
+
+                        if len(asientosLibres) > 1:
+                            for i in asientosLibres:
+                                i.click()
+
+                            print('Empieza el letargo')
+                            time.sleep(700)
+
+                        else:
+                            driver.back()
+                            print('he hecho driver back')
+                            #driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1295758/select?_ga=2.146123831.280256750.1647002764-1206011927.1647002764&viewCode=V_"+ lugar)
 
                 #seleccionAsientos()
 
 
-            else:
-                driver.refresh()
-                contador += 1
-                print('Refresh numero ' + str(contador))
 
-                if contador == 40:
-                    print('***Vuelta a empezar***')
-                    contador = 0
-                    time.sleep(60)
+            driver.refresh()
+            contador += 1
+            print('Refresh numero ' + str(contador))
+
+            if contador == 40:
+                print('***Vuelta a empezar***')
+                contador = 0
+                time.sleep(60)
 
 
         except TimeoutException:
-            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_" + lugar)
+            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1295758/select?_ga=2.146123831.280256750.1647002764-1206011927.1647002764&viewCode=V_" + lugar)
 
 def seleccionAsientos():
     cargaAsientos = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@class="unavailable-seat disabled"]')))
@@ -191,7 +211,7 @@ def seleccionAsientos():
 
 def sectorObjetivo():
     contador = 0
-    driver.get('https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_438')
+    driver.get('https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1295758/select?_ga=2.146123831.280256750.1647002764-1206011927.1647002764&viewCode=V_115')
 
     while contador != 40:
         try:
@@ -225,8 +245,9 @@ def sectorObjetivo():
                     print('***A esperar***')
 
         except TimeoutException:
-            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_FondoSur")
+            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1295758/select?_ga=2.146123831.280256750.1647002764-1206011927.1647002764&viewCode=V_115")
 
+loginSocio()
 mapaSectores()
 
 
