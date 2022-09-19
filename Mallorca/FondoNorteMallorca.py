@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pynput.keyboard import Key, Controller
-'''import sectores'''
+import sectores
 
 keyboard = Controller()
 
@@ -19,10 +19,8 @@ chrome_options.add_argument("--incognito")
 
 driver = webdriver.Chrome(executable_path="C:\\chromedriver.exe", options=chrome_options)
 
-urlPartido = input('Pon la URL del puto partido hasta "V_"')
-urlZona = input('Dime que zona o sector concreto')
-
-driver.get(urlPartido)
+driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494285/select")
+print('*** SE CARGA LA PAGINA PRINCIPAL ***')
 wait = WebDriverWait(driver, 120)
 wait50 = WebDriverWait(driver, 50)
 
@@ -37,8 +35,8 @@ except selenium.common.exceptions.ElementClickInterceptedException:
 
 def loginSocio():
 
-    socio = '63949'
-    password = '120697'
+    socio = '51256'
+    password = '735669'
 
     socio2 = '649542'
 
@@ -95,8 +93,8 @@ def mapaGeneral():
 
 def mapaSectores():
 
-    lugar = ('FondoSur')
-    driver.get(urlPartido + urlZona)
+    lugar = ('FondoNorte')
+    driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494285/select?viewCode=V_"+ lugar)
 
     contador = 0
 
@@ -110,16 +108,26 @@ def mapaSectores():
             print('Dispo Sectores NO - ' + str(len(dispoNo)))
             print('Dispo Sectores SI - ' + str(len(dispoSi)))
 
+            dispoSiNumero = 0
+            print('Contador Diso Si -- ' + str(dispoSiNumero))
+
             if len(dispoSi) != 0:
                 winsound.PlaySound("SystemExclamation", winsound.SND_ALIAS)
                 try:
-                    dispoSi[0].click()
+                    dispoSi[dispoSiNumero].click()
+                    print('se ha hecho click en el sector libre')
+                    dispoSiNumero = dispoSiNumero + 1
 
                 except selenium.common.exceptions.JavascriptException:
                     driver.execute_script("arguments[0].click();", dispoSi[0])
+                    print('se ha hecho click en el sector libre 2')
+
+
 
                 except selenium.common.exceptions.ElementClickInterceptedException:
+                    time.sleep(1)
                     webdriver.ActionChains(driver).move_to_element(dispoSi[0]).click(dispoSi[0]).perform()
+                    print('se ha hecho click en el sector libre 3')
 
                 cargaAsientos = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@class="button secondary expand back ng-binding"]')))
                 print("**carga asientos OK**")
@@ -138,12 +146,16 @@ def mapaSectores():
 
                 else:
                     driver.back()
+                    print('*** SE HA HECHO DRIVER BACK ***')
+                    driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494285/select?viewCode=V_" + lugar)
 
                 #seleccionAsientos()
 
 
             else:
                 driver.refresh()
+                print('*** SE HA HECHO DRIVER REFRESH ***')
+
                 contador += 1
                 print('Refresh numero ' + str(contador))
 
@@ -154,7 +166,7 @@ def mapaSectores():
 
 
         except TimeoutException:
-            driver.get("urls://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494237/select?viewCode=V_" + lugar)
+            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494285/select?viewCode=V_" + lugar)
 
 def seleccionAsientos():
     cargaAsientos = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@class="unavailable-seat disabled"]')))
@@ -229,7 +241,7 @@ def sectorObjetivo():
 
         except TimeoutException:
             driver.get("urls://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_FondoSur")
-
+loginSocio()
 mapaSectores()
 
 

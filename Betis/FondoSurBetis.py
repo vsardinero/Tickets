@@ -19,7 +19,10 @@ chrome_options.add_argument("--incognito")
 
 driver = webdriver.Chrome(executable_path="C:\\chromedriver.exe", options=chrome_options)
 
-driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494237/select?viewCode=V_FondoSur")
+urlPartido = ("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494285/select?viewCode=V_")
+sectorBusca = str("FondoNorte")
+
+driver.get(urlPartido + sectorBusca)
 wait = WebDriverWait(driver, 120)
 wait50 = WebDriverWait(driver, 50)
 
@@ -88,12 +91,13 @@ def mapaGeneral():
                     time.sleep(60)
 
         except TimeoutException:
-            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494237/select?viewCode=V_FondoSur")
+            driver.get(urlPartido + sectorBusca)
+
 
 def mapaSectores():
 
-    lugar = ('FondoSur')
-    driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494237/select?viewCode=V_"+ lugar)
+    lugar = ('')
+    driver.get(urlPartido + sectorBusca)
 
     contador = 0
 
@@ -151,7 +155,7 @@ def mapaSectores():
 
 
         except TimeoutException:
-            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1494237/select?viewCode=V_" + lugar)
+            driver.get(urlPartido + sectorBusca)
 
 def seleccionAsientos():
     cargaAsientos = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@class="unavailable-seat disabled"]')))
@@ -191,33 +195,26 @@ def seleccionAsientos():
 
 def sectorObjetivo():
     contador = 0
-    driver.get('https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_438')
+    driver.get(urlPartido + sectorBusca)
 
     while contador != 40:
         try:
             cargaAsientos = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@class="unavailable-seat disabled"]')))
             keyboard.tap(Key.end)
             asientosLibres = driver.find_elements_by_xpath('//*[@class="interactive available-seat"]')
-            asientosOcupados = driver.find_elements_by_xpath('//*[@class="unavailable-seat disabled"]')
+            asientosOcupados = driver.find_elements_by_xpath('//*[@class="unavailable-seat"]')
             print('Asientos ocupados - ' + str(len(asientosOcupados)))
             print('Asientos libres - ' + str(len(asientosLibres)))
 
-            if len(asientosLibres) != 0:
+            if len(asientosLibres) > 1:
+                for i in asientosLibres:
+                    i.click()
 
-                try:
-                    asientosLibres[0].click()
-
-                except selenium.common.exceptions.JavascriptException:
-                    driver.execute_script("arguments[0].click();", asientosLibres)
-
-                if asientosLibres[1] or asientosLibres[2] or asientosLibres[3]:
-                    time.sleep(0.2)
-                    asientosLibres[1].click()
-                    asientosLibres[2].click()
-                    asientosLibres[3].click()
+                print('Empieza el letargo')
+                time.sleep(700)
 
             else:
-                driver.refresh()
+                driver.back()
                 contador += 1
 
                 if contador == 40:
@@ -225,8 +222,9 @@ def sectorObjetivo():
                     print('***A esperar***')
 
         except TimeoutException:
-            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1274936/select?_ga=2.97099615.1973057075.1650877872-1206011927.1647002764&viewCode=V_FondoSur")
+            driver.get(urlPartido + sectorBusca)
 
+loginSocio()
 mapaSectores()
 
 
