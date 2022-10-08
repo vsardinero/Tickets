@@ -6,8 +6,8 @@ from gologin import GoLogin
 
 
 gl = GoLogin({
- 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTM0YTQ0NmEwNzYzMDU2ZjkxM2Y1MTEiLCJ0eXBlIjoiZGV2Iiwiand0aWQiOiI2MTM0ZTI2OTllMjRmZTI4ZTBiOTc1N2QifQ.7bTkxXSzMOoOwKXny3lGjBXZqsbtEh2s-XDgsw6zjUo',
- 'profile_id': 'yU0Pr0f1leiD',
+ 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzE0YTI2YzUzNjc5YjczZGFlN2ZlNjMiLCJ0eXBlIjoiZGV2Iiwiand0aWQiOiI2MzE1YTQyNzE5YmM0OTQ5MmZmZjM3M2YifQ.S-FPJC1i3ho1mqBl5MNFKGSd4iRG7mKs5oNBL6mpTR4',
+ 'profile_id': '6314a318fd572452d1040ebd',
 })
 
 if platform == "linux" or platform == "linux2":
