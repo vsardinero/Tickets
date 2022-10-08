@@ -90,7 +90,7 @@ def mapaGeneral():
                     time.sleep(60)
 
         except TimeoutException:
-            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/22282/session/1295758/select?_ga=2.146123831.280256750.1647002764-1206011927.1647002764")
+            driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1509865/select")
 
 def mapaSectores():
 
@@ -253,8 +253,7 @@ def sectorObjetivo():
             driver.get("https://proticketing.com/realmadrid_futbol/es_ES/entradas/evento/26217/session/1509865/select?viewCode=V_31")
 
 loginSocio()
-sectorObjetivo()
-
+mapaGeneral()
 
 
 
